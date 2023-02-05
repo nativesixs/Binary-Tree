@@ -1,12 +1,3 @@
-/**
- * @file       tree.h
- * @author     Ondřej Ševčík
- * @date       6/2019
- * @brief      Definition of function for binary tree
- * **********************************************************************
- * @par       COPYRIGHT NOTICE (c) 2019 TBU in Zlin. All rights reserved.
- */
-
 #ifndef _TREE_H_
 #define _TREE_H_
 
