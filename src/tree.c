@@ -1,51 +1,12 @@
-/**
- * @file       tree.c
- * @author     Ondřej Ševčík
- * @date       6/2019
- * @brief      Source file for binary tree
- * **********************************************************************
- * @par       COPYRIGHT NOTICE (c) 2019 TBU in Zlin. All rights reserved.
- */
-
 #include "tree.h"
 #include "mymalloc.h"
-
-/* Local functions declaration ---------------------------------------------- */
-/**
- * @brief print_postorder   Recursive function that calls itself with the left
- * node and then right node and then processes node that is called with the
- * function that is passed in argument
- * @param node  Pointer at node
- * @param proc  function that is called by each node
- */
 void print_postorder(TreeNode* node, TreeNodeProc proc);
-
-/**
- * @brief print_inorder Recursive function that calls itself with the left node
- * first, then processes the current node with the function that is passed in
- * argument and then it calls itself with the right node
- * @param node  Pointer at node
- * @param proc  function that is called by each node
- */
 void print_inorder(TreeNode* node, TreeNodeProc proc);
-
-/**
- * @brief print_preorder    Recursive function that processes node first, then
- * it calls itself with the left and then right node
- * @param node  Pointer at node
- * @param proc  function that is called by each node
- */
 void print_preorder(TreeNode* node, TreeNodeProc proc);
 
-
-
-
 bool Tree_Init(Tree* const root) {
-    // kontrola, zda byl předán ukazatel
     if (root) {
-        // nastavení kořenového prvku na NULL
         root->root = NULL;
-        // vynulování počtu uložených prvků ve stromě
         root->itemsCount = 0;
         return true;
     }
@@ -63,8 +24,6 @@ void clear(TreeNode*node){
 
 }
 
-
-
 void Tree_Clear(Tree* const root) {
     if (root != NULL){
    clear(root->root);
@@ -74,17 +33,11 @@ void Tree_Clear(Tree* const root) {
 }
 
 
-
-
-
-// pomocná funkce pro vytvoření nového prvku bin. stromu
 TreeNode* _tree_create_node(const Data_t* const data) {
-    // alokace paměti prvku
+    // alokace pameti
     TreeNode* node = myMalloc(sizeof(TreeNode));
     if(node != NULL){
-        // uložení dat
         node->data = *data;
-        // nastavení potomků na NULL
         node->left = NULL;
         node->right = NULL;
     }
@@ -92,31 +45,28 @@ TreeNode* _tree_create_node(const Data_t* const data) {
 }
 
 bool Tree_Insert(Tree* const root, const Data_t data) {
-    // kontrola, zda byl předán ukazatel
+    //kontrola ukazatele
     if (root) {
-        // kontrola, zda již bin. strom obsahuje kořenový prvek
+        //kontrola existence rootu
         if (!root->root) {
-            // vytvoření kořenového prvku
+            //create root
             root->root = _tree_create_node(&data);
-            // kontrola, zda se prvek vytvořil
+            //kontrola creatu
             if (root->root == NULL) {
                 return false;
             }
         } else {
-            // bin. strom již obsahuje prvky, probublání na pozici,
-            // kde se nové data mají uložit
             TreeNode* node = root->root;
             TreeNode* parent = NULL;
             int result = 0;
 
-            // průchod bin. stromem
+            //pruchod bintree
             while (node) {
-                // uložení aktuálního prvku pro pozdější zpracování
                 parent = node;
-                // porovnání vkládaných dat s aktuálním prvkem průchodu bin. stromu
+                //porovnani input x current
                 result = Data_Cmp(&data, &node->data);
 
-                // posunutí se v bin. stromě na správného potomka dle porovnání dat
+                //posunuti v bintree na relevantniho potomka
                 if (result == 0) {
                     return false;
                 } else if (result < 0) {
@@ -126,24 +76,22 @@ bool Tree_Insert(Tree* const root, const Data_t data) {
                 }
             }
 
-            // kontola, zda se má prvek uložit jako levý nebo pravý potomek
+            //kontrola ulozeni l x r node ?
             if (result < 0) {
-                // vytvoření nového prvku a uložení do bin. stromu jako levý potomek
+                //create new node -> save as left
                 parent->left = _tree_create_node(&data);
-                // kontrola, zda se prvek vytvořil
                 if (parent->left == NULL) {
                     return false;
                 }
             } else {
-                // vytvoření nového prvku a uložení do bin. stromu jako pravý potomek
+                //create new node -> save as right
                 parent->right = _tree_create_node(&data);
-                // kontrola, zda se prvek vytvořil
                 if (parent->right == NULL) {
                     return false;
                 }
             }
         }
-        // inkrementace počtu prvků bin. stromu
+        //++ prvky bintree
         root->itemsCount++;
         return true;
     }
@@ -163,7 +111,6 @@ TreeNode * FindMin(TreeNode *root){
     }
     return root;
 }
-
 
 void Tree_Delete(Tree* const root, const Data_t data) {
 if(root==NULL) return;
@@ -276,10 +223,10 @@ proc(node);                         //root
 }
 
 void Tree_Print(TreeNode* node, TreeNode* previous, int spaces) {
-    // kontrola, zda byly přenány ukazatele
+    //kontrola predani ukazatelu
     if (node == NULL || previous == NULL) return;
 
-    // rekurzivní výpis bin. stromu
+    //vypis bintree
     spaces += 6;
     Tree_Print(node->right, node, spaces);
     printf("\n");
